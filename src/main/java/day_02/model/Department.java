@@ -1,8 +1,10 @@
 package day_02.model;
 import java.util.Objects;
 public class Department {
+    //a)private instance vars
     private final int deptId;
     private final String deptName;
+    //b)Constructor
     public Department(int deptId, String deptName) {
         //<0
         if(deptId <=0) {
@@ -16,7 +18,7 @@ public class Department {
         this.deptName = deptName;
     }
 
-    //3)get && set
+    //c)get && set
     public int getDeptId() {
         return deptId;
     }
