@@ -11,9 +11,8 @@ public class EmployeeService {
 
     private final EmployeeRepository repository;
 
-    // Thread-safe employee cache
-    private final Map<Long, Employee> employeeCache =
-            new ConcurrentHashMap<>();
+    // Thread-safe
+    private final Map<Long, Employee> employeeCache = new ConcurrentHashMap<>();
 
     public EmployeeService(EmployeeRepository repository) {
         this.repository = repository;

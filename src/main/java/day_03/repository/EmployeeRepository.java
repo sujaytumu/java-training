@@ -15,7 +15,7 @@ public class EmployeeRepository {
       //FUNCN:- now add emploee is funcn used to add vals
       public boolean addEmployee(Employee employee){
 
-          if (!employeeIds.add(employee.getEmployeeId()))  return false;
+
           //add all things inside object(which obj "employee" created from class "Employee"
           employees.add(employee);//its just one val adding inside list/map/set
           employeeMap.put(employee.getEmployeeId(), employee);
@@ -46,25 +46,5 @@ public class EmployeeRepository {
     }
 
     // Remove employees safely using Iterator
-    public void removeEmployeesBelowSalary(double salary) {
-
-        Iterator<Employee> iterator = employees.iterator();
-
-        while (iterator.hasNext()) {
-
-            Employee employee = iterator.next();
-
-            if (employee.getSalary() < salary) {
-
-                iterator.remove();
-
-                employeeMap.remove(employee.getEmployeeId());
-                employeeIds.remove(employee.getEmployeeId());
-                pendingEmployees.remove(employee);
-            }
-        }
-    }
-
-
 
 }
