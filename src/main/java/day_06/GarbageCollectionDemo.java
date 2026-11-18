@@ -16,7 +16,7 @@ public class GarbageCollectionDemo {
         System.out.println("Retained blocks: "
                 + retainedData.size());
 
-        retainedData.clear();
+        retainedData.clear();//only ref gone, not mem
 
         System.out.println("After clear: "
                 + retainedData.size());

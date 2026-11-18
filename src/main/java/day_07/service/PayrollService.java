@@ -26,6 +26,7 @@ public class PayrollService {
             for (Employee employee : employees) {
                 results.add(
                         executor.submit(new PayrollTask(employee))
+                        //new Thread(new PayrollTask(employee)).start()..runnable
                 );
             }
 

@@ -31,7 +31,7 @@ public class Main {
         );
 
         Employee employee2 = new Employee(
-                101, "Rahul", "rahul@gmail.com",
+                101, "surya", "surya@gmail.com",
                 35000, engineering, softwareEngineer,
                 EmploymentType.CONTRACT
         );

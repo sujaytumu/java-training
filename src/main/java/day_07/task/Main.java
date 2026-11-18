@@ -34,23 +34,23 @@ public class Main {
         // Employee test data
         List<Employee> employees = Arrays.asList(
 
-                new Employee(101, "Rahul", "rahul@gmail.com",
+                new Employee(101, "Sujay", "sujay@gmail.com",
                         40000, department, designation,
                         EmploymentType.FULL_TIME),
 
-                new Employee(102, "Aman", "aman@gmail.com",
+                new Employee(102, "surya", "surya@gmail.com",
                         50000, department, designation,
                         EmploymentType.FULL_TIME),
 
-                new Employee(103, "Priya", "priya@gmail.com",
+                new Employee(103, "navya", "navya@gmail.com",
                         45000, department, designation,
                         EmploymentType.FULL_TIME),
 
-                new Employee(104, "Kiran", "kiran@gmail.com",
+                new Employee(104, "maggi", "maggi@gmail.com",
                         55000, department, designation,
                         EmploymentType.FULL_TIME),
 
-                new Employee(105, "Arjun", "arjun@gmail.com",
+                new Employee(105, "anshu", "anshu@gmail.com",
                         60000, department, designation,
                         EmploymentType.FULL_TIME)
         );

@@ -31,17 +31,17 @@ public class Main {
 
         // Add employees
         repository.addEmployee(new Employee(
-                101, "Rahul", "rahul@gmail.com", 50000,
+                101, "Sujay", "sujay@gmail.com", 50000,
                 engineering, developer, EmploymentType.FULL_TIME
         ));
 
         repository.addEmployee(new Employee(
-                102, "Priya", "priya@gmail.com", 60000,
+                102, "Surya", "surya@gmail.com", 60000,
                 hr, manager, EmploymentType.FULL_TIME
         ));
 
         repository.addEmployee(new Employee(
-                103, "Arjun", "arjun@gmail.com", 40000,
+                103, "Navya", "navya@gmail.com", 40000,
                 engineering, developer, EmploymentType.CONTRACT
         ));
 
@@ -60,7 +60,7 @@ public class Main {
 
             records.forEach(System.out::println);
 
-        } catch (EmployeeException e) {
+        } catch (EmployeeException e) {//varying warning logger vs severe logger
             logger.warning("Payroll processing failed: " + e.getMessage());
 
         } catch (IOException e) {

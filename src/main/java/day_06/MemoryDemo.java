@@ -18,6 +18,8 @@ public class MemoryDemo {
                 EmploymentType.FULL_TIME
         );
 
+        System.out.println(employee);
+
         Employee sameEmployee = employee;
 
         System.out.println("Same object: "
@@ -28,6 +30,7 @@ public class MemoryDemo {
         System.out.println("Employee still reachable: "
                 + (employee != null));
 
+        //to get gc, use weak
         WeakReference<Employee> weak =
                 new WeakReference<>(employee);
 

@@ -8,11 +8,12 @@ public class PayrollReportService {
 
     public void saveReport(List<String> records) throws IOException {
 
+        //to, save file in phy report, use writer(not sopln)
         try (BufferedWriter writer =
                      Files.newBufferedWriter(Path.of("payroll-report.txt"))) {
 
             writer.write("ID | NAME | SALARY | BONUS | TAX | NET SALARY");
-            writer.newLine();
+            writer.newLine();//auto-closable
 
             for (String record : records) {
                 writer.write(record);

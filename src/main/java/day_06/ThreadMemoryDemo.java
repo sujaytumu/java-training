@@ -20,7 +20,7 @@ public class ThreadMemoryDemo {
         first.start();
         second.start();
 
-        first.join();
+        first.join();//replace above
         second.join();
 
         System.out.println("Expected count: 2000");
