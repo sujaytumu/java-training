@@ -1,0 +1,5 @@
+package day_09_day_10.specification;
+public interface Specification<T> {
+ boolean isSatisfiedBy(T candidate);
+ default Specification<T> and(Specification<T> other){return candidate -> isSatisfiedBy(candidate) && other.isSatisfiedBy(candidate);}
+}
