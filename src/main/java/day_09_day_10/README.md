@@ -1,41 +1,49 @@
-# Day 09 + Day 10 — SOLID and Design Patterns
-Run `day_09_day_10.Main` using Java 21 from IntelliJ or Maven.
+# Day 9–10: End-to-End Payroll Application
 
-## Practical
-Start with `bad/BadPayrollExample.java` to see the anti-pattern: validation, salary rules and notification mixed in one class. Compare with `service/PayrollService.java`.
+A runnable Java 21 application connecting six patterns in one business workflow.
 
-## Implemented
-- **SRP / SoC:** calculation, validation, persistence, and notification separated.
-- **OCP / LSP:** salary strategies share a contract; extend with new implementations.
-- **ISP / DIP / DI:** small interfaces, constructor-injected repository, specification, validator and observers.
-- **Factory:** `SalaryStrategyFactory` selects strategy based on employee type.
-- **Builder:** `Employee.Builder` makes object construction readable.
-- **Strategy:** full-time, intern and contract gross salary algorithms.
-- **Specification:** eligibility rule, with reusable `and` combinator.
-- **Chain of Responsibility:** active and salary validation handlers.
-- **Observer:** simulated email and employee notification after save.
-- **Repository:** in-memory persistence adapter, replaceable by a DB implementation.
-- **Command:** payroll action represented as an executable object.
-- **Template Method:** fixed processing sequence, customizable gross calculation.
-- **State (simplified):** enum-based lifecycle guard. A full GoF State pattern would use separate state classes.
+| Pattern | Implementation | Responsibility |
+|---|---|---|
+| Builder | model/Employee.java | Build a valid immutable employee |
+| Chain of Responsibility | validation/ | Validate employee through ordered handlers |
+| Strategy | strategy/ | Encapsulate salary calculation algorithms |
+| Simple Factory | factory/SalaryStrategyFactory.java | Select the strategy for employee type |
+| Abstract Factory | abstractfactory/ | Create a matching tax-calculator and payslip-formatter family |
+| Observer | observer/ | Notify independent listeners after saving payroll |
 
-## Architecture notes
-- **Composition over inheritance:** PayrollService composes collaborators rather than inheriting from them.
-- **DDD:** Employee is an entity; Payroll is a record representing a payroll result. Real money should use BigDecimal, not double.
-- **Layered:** business service and repository are separate; a REST controller can be added later.
-- **Hexagonal:** PayrollRepository is an outbound port; InMemoryPayrollRepository is an adapter.
-- **Scope:** no real database, email sending, payroll regulations or Spring Boot integration. Tax is a simplified fixed 10% teaching example.
+Repository and service classes support the workflow; they are not counted as additional patterns.
 
-## Expected main output
+## Flow
+1. Main builds an Employee.
+2. PayrollService runs the validation chain.
+3. SalaryStrategyFactory selects a salary strategy.
+4. Strategy calculates gross salary.
+5. Abstract Factory supplies the tax calculator and payslip formatter.
+6. Service calculates tax/net, creates Payroll, and saves it.
+7. Observer listeners receive the event after persistence.
+
+## Demo rules (not real payroll/tax advice)
+- Full-time gross = base salary + 10,000
+- Contract gross = base salary × 1.20
+- Intern gross = fixed 15,000
+- Standard demo tax = 10%; alternate demo tax = 15%
+
+## Run from repository root
+```bash
+mvn -DskipTests compile
+java -cp target/classes day_09_day_10.payroll.Main
 ```
-Payroll saved for employee ID: 101
-Payslip email simulated for Sujay
-Notification generated for Sujay
-Gross Salary: 40000.0
-Tax: 4000.0
-Net Salary: 36000.0
-Payroll saved for employee ID: 102
-Payslip email simulated for Intern
-Notification generated for Intern
-Workflow status: COMPLETED
-```
+
+## Hands-on experiments
+- Change EmployeeType in Main and watch the Factory select a different Strategy.
+- Set active(false) and confirm validation stops processing before persistence.
+- Replace StandardPayrollComponentFactory with AlternatePayrollComponentFactory; tax calculation and payslip format change together.
+- Add a PayrollObserver implementation and register it in Main without changing PayrollService.
+
+## Design notes
+- BigDecimal is used for money to avoid binary floating-point rounding issues.
+- Employee is immutable; validation happens at Builder.build().
+- Every validator performs one check and delegates to the next handler.
+- Simple Factory chooses one algorithm; Abstract Factory creates a family of related components.
+- Observer notifications happen after saving. This demo logs listener failures and continues; production systems may require an outbox and retries.
+- The repository is in-memory; records disappear when the application exits.

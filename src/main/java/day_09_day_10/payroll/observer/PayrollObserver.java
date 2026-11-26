@@ -1,0 +1,8 @@
+package day_09_day_10.payroll.observer;
+
+import day_09_day_10.payroll.model.Employee;
+import day_09_day_10.payroll.model.Payroll;
+
+public interface PayrollObserver {
+    void onPayrollProcessed(Employee employee, Payroll payroll);
+}
