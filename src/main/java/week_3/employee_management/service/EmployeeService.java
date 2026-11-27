@@ -13,10 +13,15 @@ import org.springframework.transaction.annotation.*;
  private final EmployeeRepository employees; private final DepartmentRepository departments; private final AuditService audit;
  public EmployeeService(EmployeeRepository e,DepartmentRepository d,AuditService a){employees=e;departments=d;audit=a;}
  @Transactional public EmployeeResponse create(EmployeeRequest r){
-  if(employees.existsByEmail(r.email()))throw new IllegalArgumentException("Email already registered");
+  String email=r.email().trim().toLowerCase();
+  if(employees.existsByEmail(email))throw new IllegalArgumentException("Email already registered");
   Department d=departments.findById(r.departmentId()).orElseThrow(()->new EntityNotFoundException("Department not found"));
-  Employee e=employees.save(new Employee(r.name().trim(),r.email().trim().toLowerCase(),r.salary(),d));
-  audit.record("CREATED",e.getId());return map(e);
+  Employee e=new Employee(r.name().trim(),email,r.salary(),d);
+  // CascadeType.PERSIST on Department.employees persists this new Employee with the managed Department.
+  d.addEmployee(e);
+  departments.save(d);
+  audit.record("CREATED",e.getId());
+  return map(e);
  }
  @Transactional(readOnly=true,isolation=Isolation.READ_COMMITTED)
  public Page<EmployeeResponse> list(String name,Long dept,int page,int size,String sortBy,String dir){
@@ -30,8 +35,9 @@ import org.springframework.transaction.annotation.*;
  @Transactional public EmployeeResponse replace(Long id,EmployeeRequest r){
   Employee e=employees.findById(id).orElseThrow(()->new EntityNotFoundException("Employee not found: "+id));
   Department d=departments.findById(r.departmentId()).orElseThrow(()->new EntityNotFoundException("Department not found"));
-  if(!e.getEmail().equalsIgnoreCase(r.email())&&employees.existsByEmail(r.email()))throw new IllegalArgumentException("Email already registered");
-  e.replace(r.name().trim(),r.email().trim().toLowerCase(),r.salary(),d);e=employees.saveAndFlush(e);
+  String email=r.email().trim().toLowerCase();
+  if(!e.getEmail().equalsIgnoreCase(email)&&employees.existsByEmail(email))throw new IllegalArgumentException("Email already registered");
+  e.replace(r.name().trim(),email,r.salary(),d);e=employees.saveAndFlush(e);
   audit.record("UPDATED",e.getId());return map(e);
  }
  @Transactional public void delete(Long id){Employee e=employees.findById(id).orElseThrow(()->new EntityNotFoundException("Employee not found: "+id));employees.delete(e);audit.record("DELETED",id);}
