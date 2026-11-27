@@ -70,6 +70,7 @@ Change ClockConsumer to request the primary Clock, run, then restore @Qualifier(
 - application.properties contains common defaults; profile files override environment-specific values.
 - @ConfigurationProperties binds a group of settings into a typed object.
 - @ConditionalOnProperty and @ConditionalOnMissingBean demonstrate conditional bean registration.
+- EmployeeFeatureAutoConfiguration is a custom auto-configuration registered through the Boot imports metadata file.
 - Actuator exposes operational endpoints; only health/info are exposed here.
 
 ### Your turn

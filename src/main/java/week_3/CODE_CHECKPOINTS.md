@@ -13,6 +13,7 @@ This file is a compact map of concepts to actual implementation. Use RUNBOOK.md 
 - Profiles and externalized values: resources/application*.properties.
 - Typed config: config/AppProperties.java.
 - Conditional bean creation: config/AppConfig.java.
+- Custom auto-configuration: config/EmployeeFeatureAutoConfiguration.java, registered through resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports.
 - Actuator: /actuator/health.
 
 ## Day 13 — REST

@@ -30,6 +30,6 @@ Demo login: POST /api/v1/auth/login with JSON {"username":"admin","password":"ad
 | GET | /api/v1/attendance/employee/{id} | Attendance history |
 
 ## Concepts
-IoC/DI, bean scopes and lifecycle, component scanning, @Bean/@Configuration, @Primary/@Qualifier, conditional beans, AOP proxy, profiles, ConfigurationProperties, REST DTOs, Jackson, Bean Validation, global errors, HTTP status codes, URI versioning, idempotency fundamentals, JPA relationships and cascade, lazy loading, JPQL, native SQL, Specifications, transactions, propagation, isolation, optimistic/pessimistic locking, N+1 fetch planning, HikariCP, Flyway, JWT, BCrypt, role-based authorization, CORS, JUnit, Mockito, MockMvc, Testcontainers introduction and code coverage.
+IoC/DI, bean scopes and lifecycle, component scanning, @Bean/@Configuration, @Primary/@Qualifier, conditional beans, AOP proxy, profiles, ConfigurationProperties, conditional and custom auto-configuration, REST DTOs, Jackson, Bean Validation, global errors, HTTP status codes, URI versioning, idempotency fundamentals, JPA relationships and cascade, lazy loading, JPQL, native SQL, Specifications, transactions, propagation, isolation, optimistic/pessimistic locking, N+1 fetch planning, HikariCP, Flyway, JWT, BCrypt, role-based authorization, CORS, JUnit, Mockito, MockMvc, Testcontainers introduction and code coverage.
 
 See RUNBOOK.md and CODE_CHECKPOINTS.md for the exact practical sequence.
