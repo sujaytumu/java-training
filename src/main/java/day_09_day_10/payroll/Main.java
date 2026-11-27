@@ -24,7 +24,7 @@ public class Main {
         Employee employee = new Employee.Builder()
                 .id(101)
                 .name("Sujay")
-                .type(EmployeeType.FULL_TIME)
+                .type(EmployeeType.FULL_TIME)//contract
                 .baseSalary(new BigDecimal("30000.00"))
                 .active(true)
                 .build();
@@ -39,10 +39,13 @@ public class Main {
 
         // ABSTRACT FACTORY: create a consistent family of payroll components.
         PayrollComponentFactory componentFactory = new StandardPayrollComponentFactory();
+        //new Alternatepayroll...
 
-        // OBSERVER: listeners are independent from the payroll business logic.
+        // OBSERVER: listeners are independent of the payroll business logic.
+        //list creates 2 objs(email,auditmsg) both implements payrollObserver
         List<PayrollObserver> observers = List.of(new EmailObserver(), new AuditObserver());
-
+        //push-style Observer pattern: the publisher passes
+        //the employee and payroll to each observer.
         PayrollService service = new PayrollService(
                 validationChain, strategyFactory, componentFactory, repository, observers);
 
@@ -50,14 +53,16 @@ public class Main {
         var payroll = service.process(employee);
         System.out.println("\nFinal payslip:");
         System.out.println(componentFactory.payslipFormatter().format(employee, payroll));
+        //101 done here.
 
-        // Negative-path test: inactive employee must be rejected before save/notify.
+        // -ve path test: inactive employee must be rejected before save/notify.
         Employee inactive = new Employee.Builder()
                 .id(102)
                 .name("Inactive Employee")
-                .type(EmployeeType.CONTRACT)
+                .type(EmployeeType.CONTRACT)//full-time
                 .baseSalary(new BigDecimal("25000.00"))
-                .active(false)
+                .active(false)//observer....true
+                //inactive no salary etc, direct rejection
                 .build();
 
         try {

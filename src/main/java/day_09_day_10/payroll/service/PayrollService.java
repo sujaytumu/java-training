@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
-/** Coordinates the use case; each pattern owns one distinct responsibility. */
+// Coordinates the use case; each pattern owns one distinct responsibility.
 public final class PayrollService {
     private final EmployeeValidator validatorChain;
     private final SalaryStrategyFactory strategyFactory;
@@ -26,18 +26,20 @@ public final class PayrollService {
                           PayrollComponentFactory componentFactory,
                           PayrollRepository repository,
                           List<PayrollObserver> observers) {
+        //using objs(valchain, strafac, compfact, repo, obs)
         this.validatorChain = Objects.requireNonNull(validatorChain);
         this.strategyFactory = Objects.requireNonNull(strategyFactory);
         this.componentFactory = Objects.requireNonNull(componentFactory);
         this.repository = Objects.requireNonNull(repository);
+        //im-mutable objs
         this.observers = List.copyOf(observers);
     }
 
     public Payroll process(Employee employee) {
-        // Validate before calculation or side effects.
+        // Validate before caln or side effects.
         validatorChain.validate(employee);
 
-        // Factory chooses the Strategy; Strategy calculates gross salary.
+        // Factory chooses/maps the Strategy; Strategy calculates gross salary.
         SalaryStrategy strategy = strategyFactory.getStrategy(employee.type());
         BigDecimal gross = strategy.calculateGrossSalary(employee);
 
@@ -46,12 +48,19 @@ public final class PayrollService {
         BigDecimal net = gross.subtract(tax);
         Payroll payroll = new Payroll(employee.id(), gross, tax, net);
 
-        // Persist first, then notify independent observers.
-        repository.save(payroll);
+
+        //Repository: save updated states 1st, then notify
+        //Persist first, then notify independent observers.
+        repository.save(payroll);//if fails, never notify
+        //Observer: notify now
         for (PayrollObserver observer : observers) {
             try {
+                //payrollService depends only on PayrollObs, not on emailObsloose couple)
+                //payroll observer..
                 observer.onPayrollProcessed(employee, payroll);
-            } catch (RuntimeException exception) {
+                //if observer==email, EmailObserver method runs itself
+            } //errors limited to that loop only
+            catch (RuntimeException exception) {
                 System.err.println("[OBSERVER ERROR] " + exception.getMessage());
             }
         }

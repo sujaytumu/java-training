@@ -8,14 +8,18 @@ public abstract class BaseEmployeeValidator implements EmployeeValidator {
 
     @Override
     public EmployeeValidator setNext(EmployeeValidator next) {
+        //receive salvaln & store
         this.next = Objects.requireNonNull(next);
         return next;
     }
 
     @Override
     public final void validate(Employee employee) {
+        //validate emp obj
         Objects.requireNonNull(employee, "employee is required");
-        check(employee);
+        //method-override
+        check(employee);//**specific validn logic
+        //curr=true, next valid there..
         if (next != null) next.validate(employee);
     }
 

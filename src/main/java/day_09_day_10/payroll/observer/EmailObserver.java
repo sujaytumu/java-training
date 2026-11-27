@@ -7,5 +7,6 @@ public final class EmailObserver implements PayrollObserver {
     @Override
     public void onPayrollProcessed(Employee employee, Payroll payroll) {
         System.out.println("[EMAIL] Payslip notification prepared for " + employee.name());
+        //for error: throw new IllegalStateException("Email provider unavailable");
     }
 }

@@ -9,6 +9,8 @@ public final class StandardPayrollComponentFactory implements PayrollComponentFa
 
     @Override
     public TaxCalculator taxCalculator() {
+        //lambda funcn is implementing calcTax funcn(isnide taxcalc)
+        // BigDecimal calculateTax(BigDecimal grossSalary);
         return gross -> gross.multiply(RATE);
     }
 
