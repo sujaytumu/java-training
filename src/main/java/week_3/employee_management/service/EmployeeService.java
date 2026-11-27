@@ -16,12 +16,9 @@ import org.springframework.transaction.annotation.*;
   String email=r.email().trim().toLowerCase();
   if(employees.existsByEmail(email))throw new IllegalArgumentException("Email already registered");
   Department d=departments.findById(r.departmentId()).orElseThrow(()->new EntityNotFoundException("Department not found"));
-  Employee e=new Employee(r.name().trim(),email,r.salary(),d);
-  // CascadeType.PERSIST on Department.employees persists this new Employee with the managed Department.
-  d.addEmployee(e);
-  departments.save(d);
-  audit.record("CREATED",e.getId());
-  return map(e);
+  // Save the owning Employee explicitly. Department also shows a safe CascadeType.PERSIST mapping example.
+  Employee e=employees.save(new Employee(r.name().trim(),email,r.salary(),d));
+  audit.record("CREATED",e.getId());return map(e);
  }
  @Transactional(readOnly=true,isolation=Isolation.READ_COMMITTED)
  public Page<EmployeeResponse> list(String name,Long dept,int page,int size,String sortBy,String dir){

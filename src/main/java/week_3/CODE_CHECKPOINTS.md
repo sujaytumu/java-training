@@ -26,7 +26,7 @@ This file is a compact map of concepts to actual implementation. Use RUNBOOK.md 
 ## Day 14 — Persistence
 - JDBC/JPA/Hibernate boundary: repositories and entities.
 - Relationships and lazy loading: domain/Department.java, Employee.java, Attendance.java.
-- Cascade PERSIST only: Department.addEmployee and EmployeeService.create. REMOVE is deliberately not cascaded.
+- Cascade PERSIST only: Department.addEmployee shows the parent-to-child mapping; REMOVE is deliberately not cascaded. The employee creation endpoint explicitly saves through EmployeeRepository.
 - JPQL, native SQL and pessimistic lock: repository/EmployeeRepository.java.
 - Dynamic query composition: EmployeeSpecifications.java.
 - Transactions, propagation and isolation: service/EmployeeService.java and AuditService.java.

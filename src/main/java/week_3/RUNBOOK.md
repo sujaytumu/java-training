@@ -93,6 +93,7 @@ Change app.company-name in local properties and inspect the bound AppProperties 
 4. List: GET /api/v1/employees?page=0&size=10&sortBy=name&direction=asc.
 5. Try invalid email, blank name, negative salary, unknown department and unknown employee ID.
 6. Try unsupported sort property; the API should reject it rather than pass arbitrary property names into sorting.
+7. Send the same Idempotency-Key header and same JSON twice; the second call should return the original result without creating another employee. Reuse the key with a changed payload and observe the 400 response.
 
 ### Explain
 - GET reads; POST creates; PUT replaces; DELETE removes.
@@ -130,6 +131,7 @@ Send one valid and two invalid employee payloads. For each, explain which layer 
 - Employee → Department is Many-to-One; Department → Employees is One-to-Many; Employee → Attendance is One-to-Many.
 - Lazy relationships load when accessed inside an open persistence context; eager loading loads earlier. Lazy is usually a safer default for collections.
 - JPQL refers to entity and field names; native SQL refers to database tables and columns.
+- Department has CascadeType.PERSIST for its employee collection and an addEmployee helper. The public create-employee endpoint explicitly saves Employee through EmployeeRepository; inspect the mapping and explain when cascade persist is appropriate. REMOVE is intentionally not cascaded.
 - Specifications compose optional predicates dynamically.
 - @Transactional defines a transaction boundary. Runtime exceptions trigger rollback by default. readOnly=true is an optimization hint, not a security lock.
 - REQUIRES_NEW starts an independent audit transaction when invoked through the Spring proxy; AuditService is a separate bean for that reason.
@@ -170,7 +172,7 @@ Explain the SQL generated for employee listing, then explain why the department 
 - JWT is signed, not encrypted. Never put secrets or sensitive personal data in its payload.
 - Unit tests isolate a class with Mockito; MockMvc tests the MVC/security pipeline without a real network server.
 - Spring Boot Test loads the application context. Testcontainers can provide disposable real PostgreSQL for integration tests; its dependency is included as an introduction, not a claim that a container test is already written.
-- Code coverage measures which code was executed by tests; high coverage alone does not prove correctness.
+- Code coverage measures which code was executed by tests; high coverage alone does not prove correctness. Run mvn verify and open target/site/jacoco/index.html.
 
 ### Your turn
 Run tests, then deliberately break one expected status code or service rule and confirm the relevant test fails. Restore the implementation and rerun.
