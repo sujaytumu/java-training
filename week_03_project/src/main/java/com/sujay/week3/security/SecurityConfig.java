@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.*;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.*;
 @Configuration public class SecurityConfig {
@@ -19,7 +21,7 @@ import org.springframework.web.cors.*;
  @Bean SecurityFilterChain chain(HttpSecurity h,JwtFilter f)throws Exception{
   h.csrf(c->c.disable()).cors(c->c.configurationSource(corsSource())).sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
    .authorizeHttpRequests(a->a.requestMatchers("/api/v1/auth/login","/swagger-ui/**","/v3/api-docs/**","/actuator/health","/h2-console/**").permitAll().anyRequest().authenticated())
-   .headers(x->x.frameOptions(y->y.sameOrigin())).addFilterBefore(f,UsernamePasswordAuthenticationFilter.class);
+   .exceptionHandling(e->e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))\n   .headers(x->x.frameOptions(y->y.sameOrigin())).addFilterBefore(f,UsernamePasswordAuthenticationFilter.class);
   return h.build();
  }
  @Bean CorsConfigurationSource corsSource(){CorsConfiguration c=new CorsConfiguration();c.setAllowedOrigins(List.of("http://localhost:3000"));c.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));c.setAllowedHeaders(List.of("Authorization","Content-Type"));UrlBasedCorsConfigurationSource s=new UrlBasedCorsConfigurationSource();s.registerCorsConfiguration("/**",c);return s;}
